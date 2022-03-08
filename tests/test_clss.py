@@ -2,8 +2,8 @@ import time
 import requests
 import random
 import string
+import os
 from selenium import webdriver
-
 
 
 def randomStringDigits(stringLength=6):
@@ -17,7 +17,9 @@ def randomStringDigits(stringLength=6):
     return random_string
 
 
-chrome_driver = './chromedriver'  # TODO ссылка на драйвер
+chrome_driver = './m1/chromedriver'
+# chrome_driver = './mac64/chromedriver'
+# chrome_driver = './linux/chromedriver'
 register_url = "http://localhost:3000/user/sign_up"
 login_url = "http://localhost:3000/user/login?redirect_to=%2f"
 test_user_name = randomStringDigits(8)
@@ -37,12 +39,10 @@ class ClassTest:
 
     def test_register(self):
 
-
-
         self.driver = webdriver.Chrome(chrome_driver)
         self.driver.get(register_url)
 
-        if "Регистрация" in self.driver.title:
+        if "Gitea: Git with a cup of tea" in self.driver.title:
             assert True
             user_name = self.driver.find_element_by_xpath('//*[@id="user_name"]')
             user_name.send_keys(test_user_name)
@@ -103,8 +103,6 @@ class ClassTest:
         time.sleep(2)
         button.click()
 
-
-
     def add_new_file(self):
 
         add_new_file = self.driver.find_element_by_xpath('//*[@id="file-buttons"]/div/a[1]')
@@ -121,8 +119,6 @@ class ClassTest:
         button_for_create_new_file = self.driver.find_element_by_xpath('//*[@id="commit-button"]')
         time.sleep(2)
         button_for_create_new_file.click()
-
-
 
     def chek_commit(self):
         check_commit = self.driver.find_element_by_xpath('/html/body/div/div[2]/div[2]/div[4]/div/div/div[1]/a')
@@ -144,3 +140,5 @@ test.test_register()
 test.create_repo()
 test.add_new_file()
 test.chek_commit()
+
+os.system('docker-compose down')
